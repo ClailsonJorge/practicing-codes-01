@@ -2,3 +2,4 @@ node_module
 .vscode
 coverage
 public
+*.scss
