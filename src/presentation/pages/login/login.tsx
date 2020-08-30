@@ -3,7 +3,7 @@ import Styles from './login-styles.scss';
 import {
   LoginHeader,
   Input,
-  FormError,
+  FormStatus,
   Footer,
 } from '@/presentation/components';
 
@@ -19,7 +19,7 @@ const Login: React.FC = () => {
           Entrar
         </button>
         <span className={Styles.link}>Criar conta</span>
-        <FormError />
+        <FormStatus />
       </form>
       <Footer />
     </div>

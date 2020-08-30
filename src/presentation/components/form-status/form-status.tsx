@@ -1,8 +1,8 @@
 import React from 'react';
 import Spinner from '../spinner/spinner';
-import Styles from './form-error-styles.scss';
+import Styles from './form-status-styles.scss';
 
-const FormError: React.FC = () => {
+const FormStatus: React.FC = () => {
   return (
     <div className={Styles.errorWrap}>
       <Spinner className={Styles.spinner} />
@@ -11,4 +11,4 @@ const FormError: React.FC = () => {
   );
 };
 
-export default FormError;
+export default FormStatus;
