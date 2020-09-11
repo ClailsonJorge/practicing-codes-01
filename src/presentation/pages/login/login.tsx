@@ -7,7 +7,6 @@ import {
   Footer,
 } from '@/presentation/components';
 import Context from '@/presentation/context/form/form-context';
-import { type } from 'os';
 import { Validation } from '@/presentation/protocols/validation';
 
 type Props = {
@@ -25,11 +24,11 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
   });
 
   useEffect(() => {
-    validation.validate({ email: state.email });
+    validation.validate('email', state.email);
   }, [state.email]);
 
   useEffect(() => {
-    validation.validate({ password: state.password });
+    validation.validate('password', state.password);
   }, [state.password]);
 
   return (
