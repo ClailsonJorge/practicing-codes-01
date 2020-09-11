@@ -6,24 +6,12 @@ import {
   fireEvent,
 } from '@testing-library/react';
 import Login from '@/presentation/pages/login/login';
-import { Validation } from '@/presentation/protocols/validation';
+import { ValidationSpy } from '@/presentation/test';
 
 type SutTypes = {
   sut: RenderResult;
   validationSpy: ValidationSpy;
 };
-
-class ValidationSpy implements Validation {
-  erroMessage: string;
-  fildName: string;
-  fildValue: string;
-
-  validate(fildName: string, fildValue: string): string {
-    this.fildName = fildName;
-    this.fildValue = fildValue;
-    return this.erroMessage;
-  }
-}
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy();
