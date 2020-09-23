@@ -11,7 +11,7 @@
     "test:ci": "npm test -- --coverage"
   },
   "keywords": [],
-  "author": "",
+  "author": "Clailson Jorge",
   "license": "GNU GPL3",
   "devDependencies": {
     "@testing-library/react": "^11.0.2",
