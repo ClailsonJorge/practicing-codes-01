@@ -12,8 +12,7 @@ import "jest-localstorage-mock";
 import { Login } from "@/presentation/pages/";
 import { ValidationStub, AuthenticationSpy } from "@/presentation/test";
 import faker from "faker";
-import { invalidCredentialsError } from "@/domain/errors";
-import { fileURLToPath } from "url";
+import { InvalidCredentialsError } from "@/domain/errors";
 
 type SutTypes = {
   sut: RenderResult;
@@ -192,7 +191,7 @@ describe("Login Component", () => {
 
   test("Should present error if Authentication fails", async () => {
     const { sut, authenticationSpy } = makeSut();
-    const error = new invalidCredentialsError();
+    const error = new InvalidCredentialsError();
     jest
       .spyOn(authenticationSpy, "auth")
       .mockReturnValue(Promise.reject(error));

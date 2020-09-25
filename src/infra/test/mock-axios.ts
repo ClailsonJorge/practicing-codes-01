@@ -1,5 +1,5 @@
-import axios from 'axios';
-import faker from 'faker';
+import axios from "axios";
+import faker from "faker";
 
 export const mockHttpResponse = (): any => ({
   data: faker.random.objectElement(),
