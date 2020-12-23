@@ -30,7 +30,7 @@ module.exports = {
           modules: true
         }
       }, {
-        loader: 'scss-loader'
+        loader: 'sass-loader'
       }]
     }]
   },
@@ -43,7 +43,7 @@ module.exports = {
     react: 'React',
     'react-dom': 'ReactDOM'
   },
-  plugin: [
+  plugins: [
     new CleanWebpackPlugin()
   ]
 }
