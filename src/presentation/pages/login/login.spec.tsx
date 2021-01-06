@@ -6,7 +6,6 @@ import faker from 'faker'
 
 type SutTypes = {
   sut: RenderResult
-  validationStub: ValidationStub
 }
 
 type SutParams = {
@@ -18,8 +17,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   validationStub.errorMessage = params?.validationError
   const sut = render(<Login validation={validationStub}/>)
   return {
-    sut,
-    validationStub
+    sut
   }
 }
 
