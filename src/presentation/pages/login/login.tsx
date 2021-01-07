@@ -28,7 +28,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     })
   }, [state.email, state.password])
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     setState({
       ...state,
