@@ -48,11 +48,12 @@ const simulateValidationStatus = (sut: RenderResult, fieldName: string, validati
   expect(fieldStatus.textContent).toBe(validationError ? '🔴' : '🟢')
 }
 
-const simulateFillValidForm = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
+const simulateFillValidForm = async (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): Promise<void> => {
   testFillEmail(sut, email)
   testFillPassword(sut, password)
-  const submitButton = sut.getByTestId('submit')
-  fireEvent.click(submitButton)
+  const form = sut.getByTestId('form')
+  fireEvent.submit(form)
+  await waitFor(() => form)
 }
 
 const history = createMemoryHistory({ initialEntries: ['/login'] })
@@ -108,28 +109,25 @@ describe('Login Component', () => {
     expect(submitButton.disabled).toBe(false)
   })
 
-  test('Should show spinner on submit', () => {
+  test('Should show spinner on submit', async () => {
     const { sut } = makeSut()
-    simulateFillValidForm(sut)
+    await simulateFillValidForm(sut)
     const spinner = sut.getByTestId('spinner')
     expect(spinner).toBeTruthy()
   })
 
-  test('Should call authentication with correct value', () => {
+  test('Should call authentication with correct value', async () => {
     const { sut, authenticationSpy } = makeSut()
     const email = faker.internet.email()
     const password = faker.internet.password()
-    simulateFillValidForm(sut, email, password)
-    expect(authenticationSpy.params).toEqual({
-      email,
-      password
-    })
+    await simulateFillValidForm(sut, email, password)
+    expect(authenticationSpy.params).toEqual({ email, password })
   })
 
-  test('Should call authentication only once', () => {
+  test('Should call authentication only once', async () => {
     const { sut, authenticationSpy } = makeSut()
-    simulateFillValidForm(sut)
-    simulateFillValidForm(sut)
+    await simulateFillValidForm(sut)
+    await simulateFillValidForm(sut)
     expect(authenticationSpy.count).toBe(1)
   })
 
@@ -145,9 +143,8 @@ describe('Login Component', () => {
     const { sut, authenticationSpy } = makeSut()
     const error = new InvalidCredentialsError()
     jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error))
-    simulateFillValidForm(sut)
+    await simulateFillValidForm(sut)
     const errorWrap = sut.getByTestId('error-wrap')
-    await waitFor(() => errorWrap)
     const mainError = sut.getByTestId('main-error')
     expect(mainError.textContent).toBe(error.message)
     expect(errorWrap.childElementCount).toBe(1)
@@ -155,8 +152,7 @@ describe('Login Component', () => {
 
   test('Should add accessToken to localStorage on sucess', async () => {
     const { sut, authenticationSpy } = makeSut()
-    simulateFillValidForm(sut)
-    await waitFor(() => sut.getByTestId('form'))
+    await simulateFillValidForm(sut)
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
