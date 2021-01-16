@@ -32,12 +32,12 @@ const makeSut = (params?: SutParams): SutTypes => {
   }
 }
 
-const simulateFillEmail = (sut: RenderResult, email = faker.internet.email()): void => {
+const testFillEmail = (sut: RenderResult, email = faker.internet.email()): void => {
   const emailInput = sut.getByTestId('email')
   fireEvent.input(emailInput, { target: { value: email } })
 }
 
-const simulateFillPassword = (sut: RenderResult, password = faker.internet.password()): void => {
+const testFillPassword = (sut: RenderResult, password = faker.internet.password()): void => {
   const passwordInput = sut.getByTestId('password')
   fireEvent.input(passwordInput, { target: { value: password } })
 }
@@ -49,8 +49,8 @@ const simulateValidationStatus = (sut: RenderResult, fieldName: string, validati
 }
 
 const simulateFillValidForm = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
-  simulateFillEmail(sut, email)
-  simulateFillPassword(sut, password)
+  testFillEmail(sut, email)
+  testFillPassword(sut, password)
   const submitButton = sut.getByTestId('submit')
   fireEvent.click(submitButton)
 }
@@ -77,33 +77,33 @@ describe('Login Component', () => {
   test('Should show email error if validation fails', () => {
     const validationError = faker.random.words()
     const { sut } = makeSut({ validationError: validationError })
-    simulateFillEmail(sut)
+    testFillEmail(sut)
     simulateValidationStatus(sut, 'email', validationError)
   })
 
   test('Should show password error if validation fails', () => {
     const validationError = faker.random.words()
     const { sut } = makeSut({ validationError: validationError })
-    simulateFillPassword(sut)
+    testFillPassword(sut)
     simulateValidationStatus(sut, 'password', validationError)
   })
 
   test('Should show valid email state if validation sucessed', () => {
     const { sut } = makeSut()
-    simulateFillEmail(sut)
+    testFillEmail(sut)
     simulateValidationStatus(sut, 'email')
   })
 
   test('Should show valid password state if validation sucessed', () => {
     const { sut } = makeSut()
-    simulateFillPassword(sut)
+    testFillPassword(sut)
     simulateValidationStatus(sut, 'password')
   })
 
   test('Should enable submit button if form is valid', () => {
     const { sut } = makeSut()
-    simulateFillEmail(sut)
-    simulateFillPassword(sut)
+    testFillEmail(sut)
+    testFillPassword(sut)
     const submitButton = sut.getByTestId('submit') as HTMLButtonElement
     expect(submitButton.disabled).toBe(false)
   })
@@ -136,7 +136,7 @@ describe('Login Component', () => {
   test('Should not call authentication if form is invalid', () => {
     const validationError = faker.random.words()
     const { sut, authenticationSpy } = makeSut({ validationError })
-    simulateFillEmail(sut)
+    testFillEmail(sut)
     fireEvent.submit(sut.getByTestId('form'))
     expect(authenticationSpy.count).toBe(0)
   })
@@ -158,6 +158,8 @@ describe('Login Component', () => {
     simulateFillValidForm(sut)
     await waitFor(() => sut.getByTestId('form'))
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/')
   })
 
   test('Should go to Signup page', () => {
