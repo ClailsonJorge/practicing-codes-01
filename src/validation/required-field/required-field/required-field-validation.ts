@@ -1,10 +1,10 @@
-import { RequiredFieldError } from '../erros'
-import { FieldValidation } from '../protocols/field-validation'
+import { RequiredFieldError } from '@/validation/erros'
+import { FieldValidation } from '@/validation/protocols/field-validation'
 
 export class RequiredFieldValidation implements FieldValidation {
   constructor (readonly field: string) {}
 
-  valdiate (value: string): Error {
+  validate (value: string): Error {
     return value ? null : new RequiredFieldError()
   }
 }
